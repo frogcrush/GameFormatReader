@@ -16,9 +16,19 @@ namespace GameFormatReader.GCWii.Discs.Wii
         /// Constructor
         /// </summary>
         /// <param name="filepath">Path to the Wii <see cref="Disc"/>.</param>
-        public DiscWii(string filepath) : base(filepath)
+        public DiscWii(string filepath) 
         {
-            using (var reader = new EndianBinaryReader(File.OpenRead(filepath), Endian.Big))
+            Initialize(File.OpenRead(filepath));
+        }
+
+        public DiscWii(Stream stream)
+        {
+            Initialize(stream);
+        }
+
+        private void Initialize(Stream stream)
+        {
+            using (var reader = new EndianBinaryReader(stream, Endian.Big))
             {
                 Header = new DiscHeaderWii(reader);
 
@@ -28,6 +38,7 @@ namespace GameFormatReader.GCWii.Discs.Wii
                 // TODO: Read the rest of the disc.
             }
         }
+
 
         #endregion
 

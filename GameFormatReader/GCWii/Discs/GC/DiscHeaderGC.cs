@@ -82,10 +82,15 @@ namespace GameFormatReader.GCWii.Discs.GC
         // Reads GameCube specific header info.
         protected override void ReadHeader(EndianBinaryReader reader)
         {
-            Type = DetermineDiscType(reader.ReadChar());
-            GameCode = new string(reader.ReadChars(2));
-            RegionCode = DetermineRegion(reader.ReadChar());
-            MakerCode = new string(reader.ReadChars(2));
+            //This is the ID6.
+            var chars = reader.ReadChars(6);
+            ID6 = new string(chars);
+            
+            Type = DetermineDiscType(chars[0]);
+            GameCode = new string(chars[1], chars[2]);
+            RegionCode = DetermineRegion(chars[3]);
+            MakerCode = new string(chars[4], chars[5]);
+            
             DiscNumber = reader.ReadByte();
             AudioStreaming = reader.ReadBoolean();
             StreamingBufferSize = reader.ReadByte();
@@ -97,6 +102,9 @@ namespace GameFormatReader.GCWii.Discs.GC
 
             // Skip to game title. Read until 0x00 (null char) is hit.
             reader.BaseStream.Position = 0x20;
+
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
             GameTitle = Encoding.GetEncoding("shift_jis").GetString(reader.ReadBytesUntil(0x00));
 
             DebugMonitorOffset = reader.ReadUInt32();

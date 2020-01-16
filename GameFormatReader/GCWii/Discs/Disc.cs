@@ -8,23 +8,6 @@ namespace GameFormatReader.GCWii.Discs
     /// </summary>
     public abstract class Disc
     {
-        #region Constructors
-
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="filepath">Path to a disc.</param>
-        protected Disc(string filepath)
-        {
-            if (filepath == null)
-                throw new ArgumentNullException(nameof(filepath));
-
-            if (!File.Exists(filepath))
-                throw new FileNotFoundException($"File {filepath} does not exist.", filepath);
-        }
-
-        #endregion
-
         #region Properties
 
         /// <summary>

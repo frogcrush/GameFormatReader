@@ -13,6 +13,8 @@ namespace GameFormatReader.GCWii.Discs
     {
         #region Properties
 
+        public string ID6 { get; protected set; }
+
         /// <summary>
         /// The <see cref="DiscType"/> of this <see cref="Disc"/>.
         /// </summary>

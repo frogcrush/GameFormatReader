@@ -14,9 +14,19 @@ namespace GameFormatReader.GCWii.Discs.GC
         /// Constructor
         /// </summary>
         /// <param name="filepath">Path to the GameCube <see cref="Disc"/>.</param>
-        public DiscGC(string filepath) : base(filepath)
+        public DiscGC(string filepath) : base()
         {
-            using (var reader = new EndianBinaryReader(File.OpenRead(filepath), Endian.Big))
+            Initialize(File.OpenRead(filepath));
+        }
+
+        public DiscGC(Stream fileStream)
+        {
+            Initialize(fileStream);
+        }
+
+        private void Initialize(Stream stream)
+        {
+            using (var reader = new EndianBinaryReader(stream, Endian.Big))
             {
                 Header = new DiscHeaderGC(reader);
                 Apploader = new Apploader(reader);
